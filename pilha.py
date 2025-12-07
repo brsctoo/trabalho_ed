@@ -4,6 +4,9 @@ class Pilha:
         self.itens = [None] * (self.TamMax + 1)
         self.topo: int = -1
 
+    def inicializa_pilha(self):
+        self.topo = -1
+        
     def pilha_vazia(self) -> bool:
         return self.topo == -1
     
@@ -20,6 +23,8 @@ class Pilha:
             item = self.itens[self.topo]
             self.topo = self.topo - 1
             return item
+        else:
+            raise Exception("Pilha Vazia")
         
     def elemento_do_topo(self):
         if not self.pilha_vazia():
