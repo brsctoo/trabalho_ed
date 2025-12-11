@@ -88,6 +88,8 @@ def main(arquivo: str) -> None:
             print(f"Erro ao calcular a expressão: {e}\n")
 
 if __name__ == "__main__":
-    main("teste_expressoes.txt")
-
-    
+    try:
+        arquivo = input("Digite o arquivo com as expressões posfixas: ")
+        main(arquivo)
+    except Exception as e:
+        print(f"Erro: {e}")
