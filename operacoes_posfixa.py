@@ -4,10 +4,10 @@ A expressão é lida como uma string onde os números são separados por pontos 
 
 Exemplo de uso:
     calcular_operacao("75.25.+9.12.+32.-*")
-    retorna: -1100.0
+    retorna: -1100
 
     calcular_operacao("2.3.4.+5./*6.-")
-    retorna: -3.2
+    retorna: -3
 
 Erros tratados:
 - Divisão por zero
