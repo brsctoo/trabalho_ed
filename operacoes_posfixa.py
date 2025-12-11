@@ -11,12 +11,21 @@ Exemplo de uso:
 
 Erros tratados:
 - Divisão por zero
-- Pilha vazia ao tentar desempilhar
-- Pilha com mais de um elemento ao final da operação
+- Pilha vazia ao tentar desempilhar -> Falta operando
+- Pilha com mais de um elemento ao final da operação -> Falta operadores
+- Pilha vazia ao final da operação
 - Operador inválido
 """
 
 from pilha import Pilha
+import sys
+sys.stdout.reconfigure(encoding="utf-8")  # assegura saída UTF-8
+
+def abrir_arquivo(nome_arquivo: str) -> str:
+    with open(nome_arquivo, 'r') as arquivo:
+        expressoes = arquivo.readlines()
+        expressoes = [linha.strip() for linha in expressoes]
+    return expressoes
 
 def calcular_operacao(exp: str) -> float:
     pilha = Pilha()
@@ -35,14 +44,23 @@ def calcular_operacao(exp: str) -> float:
                 pilha.empilha(float(num))
                 num = ""
     
-    if pilha.pilha_vazia():
-        raise Exception("Pilha Vazia -> Não ocorreu operação")
-    elif pilha.topo > 0:
-        raise Exception("Pilha com mais de um elemento -> Operação incompleta")
-    return pilha.desempilha()
+    # Verifica se há exatamente um elemento na pilha ao final
+    if pilha.pilha_vazia(): 
+        raise Exception("Pilha vazia ao final da operação.")
+    else:
+        resultado = pilha.desempilha()
+        if not pilha.pilha_vazia():
+            raise Exception("Pilha não vazia após operação -> Falta operadores.")
+            
+    return resultado
 
 def operar(operador: str, pilha: Pilha) -> float:
+
+    if pilha.pilha_vazia():
+        raise Exception("Pilha vazia ao tentar desempilhar para operação. -> Falta operando.")
     b = pilha.desempilha()
+    if pilha.pilha_vazia():
+        raise Exception("Pilha vazia ao tentar desempilhar para operação. -> Falta operando.")
     a = pilha.desempilha()
     
     if operador == "+":
@@ -53,8 +71,23 @@ def operar(operador: str, pilha: Pilha) -> float:
         return a * b
     elif operador == "/":
         if b == 0:
-            raise ValueError("Erro -> Divisão por zero")
-        return a / b
+            raise Exception("Divisão por zero")
+        return a // b
     else:
-        raise ValueError("Operador inválido")
+        raise Exception("Operador inválido")
+    
+def main(arquivo: str) -> None:
 
+    expressoes: list[str] = abrir_arquivo(arquivo)
+    for expressao in expressoes:
+        print(f"Calculando expressao posfixa: {expressao}")
+        try:   
+            resultado = int(calcular_operacao(expressao))
+            print(f"Resultado da expressão: {resultado}\n")
+        except Exception as e:
+            print(f"Erro ao calcular a expressão: {e}\n")
+
+if __name__ == "__main__":
+    main("teste_expressoes.txt")
+
+    
