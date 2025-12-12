@@ -17,6 +17,8 @@ class Pilha:
         if not self.pilha_cheia():
             self.topo = self.topo + 1
             self.itens[self.topo] = item
+        else:
+            raise Exception("Pilha Cheia")
         
     def desempilha(self):
         if not self.pilha_vazia():
